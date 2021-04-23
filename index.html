@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unsubscribe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+</head>
+<body>
+
+<div id="rule-unsubscribe-portal" style="padding: 0 10px;">
+    <style>
+        #rule-unsubscribe-block [hidden] {
+            display: none !important;
+        }
+    </style>
+    <script>
+
+        (function () {
+
+            function getTranslations() {
+
+                var translations = {
+                    en: {
+                        document: {
+                            title: 'Unsubscribe'
+                        },
+                        title: {
+                            common: 'Now You are unsubscribed from',
+                            preferences: 'Preferences settings',
+                            updating_success: 'Preferences are successfully updated',
+                            unsubscribed: 'You are unsubscribed from all emails',
+                            unsubscribing_success: 'Now You are unsubscribed from all emails',
+                            resubscribed: 'Now You are successfully resubscribed!',
+                            subscribed: 'Subscription settings'
+                        },
+                        description: 'You can update your preferences by checking the relevant checkboxes below and then clicking "update"',
+                        button_update: 'Update',
+                        footer: {
+                            text: {
+                                resubscribe: 'Resubscribe to get emails in future',
+                                unsubscribe: 'Unsubscribe from all emails in future'
+                            },
+                            button: {
+                                resubscribe: 'Resubscribe',
+                                unsubscribe: 'Unsubscribe'
+                            }
+                        }
+                    },
+                    sv: {
+                        document: {
+                            title: 'Avregistrering'
+                        },
+                        title: {
+                            common: 'Du är nu avregistrerad',
+                            preferences: 'Preferenser inställningar',
+                            updating_success: 'Inställningarna har uppdaterats',
+                            unsubscribed: 'Du är nu avregistrerad från alla email',
+                            unsubscribing_success: 'Nu är du avregistrerad från alla email',
+                            resubscribed: 'Nu är du återregistrerad!',
+                            subscribed: 'Prenumerations inställningar'
+                        },
+                        description: 'Du kan uppdatera dina preferenser genom att markera de relevanta checkboxarna och sen klicka på "uppdatera"',
+                        button_update: 'Uppdatera',
+                        footer: {
+                            text: {
+                                resubscribe: 'Återregistrera för att få framtida email',
+                                unsubscribe: 'Avregistrera från alla framtida email'
+                            },
+                            button: {
+                                resubscribe: 'Återregistrera',
+                                unsubscribe: 'Avregistrera'
+                            }
+                        }
+                    }
+                }
+
+                var default_language = 'sv';
+                var language = getParameterByName('lang') || default_language;
+                if (!translations[language]) {
+                    language = default_language;
+                }
+
+                return translations[language];
+            }
+
+            (function loadPage() {
+
+                var stylesLoadTime = 200;
+
+                loadStyles();
+
+                document.title = getTranslations().document.title;
+
+                setTimeout(function () {
+                    loadContent();
+                }, stylesLoadTime);
+            })();
+
+            function loadStyles() {
+                var styleUrls = [
+                    'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900&display=swap',
+                    getBaseUrl() + '/js/v5/unsubscribe-page.css'
+                ];
+                styleUrls.forEach(function (styleUrl) {
+                    var link = document.createElement('link');
+                    link.setAttribute('rel', 'stylesheet');
+                    link.setAttribute('href', styleUrl);
+                    document.head.appendChild(link);
+                });
+            }
+
+            function loadContent() {
+                var subscriber_id = getParameterByName('subscriber_id'),
+                    account_id = getParameterByName('account_id'),
+                    group_id = getParameterByName('preference_group_id'),
+                    preference_id = getParameterByName('preference_id'),
+                    rule_unsubscribe_portal = document.querySelector('#rule-unsubscribe-portal');
+
+                request({
+                    url: '/check-suppression?account_id=' + account_id + '&subscriber_id=' + subscriber_id,
+                    callback: function(subscriber) {
+                        if (preference_id && group_id) {
+                            var url = '/preference/encrypted-preferences?account_id=' + account_id + '&preference_group_id=' + group_id + '&subscriber_id=' + subscriber_id;
+                            request({
+                                url: url,
+                                callback: function(preferences) {
+
+                                    subscriber.preference_id = preference_id;
+                                    subscriber.preference_group = preferences.preference_group;
+                                    subscriber.preference_group.preferences.sort(function (preferenceA, preferenceB) {
+                                        return preferenceA.order > preferenceB.order ? 1 : -1;
+                                    });
+
+                                    rule_unsubscribe_portal.innerHTML = getPreferencesPage(subscriber);
+
+                                    var unsubscribed_preference = getPreference(preference_id, subscriber.preference_group.preferences);
+                                    if (!unsubscribed_preference.is_opted_in) {
+                                        highLightPreference(preference_id);
+                                    }
+                                    listenUpdatePreferences(subscriber_id, account_id, subscriber.preference_group);
+                                    listenToggleSubscribe(subscriber_id, account_id);
+                                }
+                            });
+                        } else {
+                            rule_unsubscribe_portal.innerHTML = getPreferencesPage(subscriber);
+                            listenToggleSubscribe(subscriber_id, account_id);
+                        }
+                    }
+                });
+            }
+
+            function getPreferencesPage(subscriber) {
+
+                var unsubscribed_preference_id = subscriber.preference_id,
+                    preference_group = subscriber.preference_group,
+                    has_preferences = !!preference_group,
+                    is_suppressed = subscriber.is_suppressed,
+                    translation = getTranslations(),
+                    visibility_attribute = is_suppressed ? 'hidden="true"' : '';
+
+                return '' +
+                '<div class="unsubscribe-page">' +
+                  '<h2 class="title" id="preferences-title">' +
+                     getInitialTitle(has_preferences, is_suppressed, preference_group, unsubscribed_preference_id) +
+                  '</h2>' +
+                  (has_preferences
+                   ?  '' +
+                  '<div class="content" id="preferences-content" ' + visibility_attribute + ' >' +
+                    '<p class="description">' + translation.description + '</p>' +
+                    '<div class="email-preferences-group">' +
+                      '<p class="name">' +
+                        preference_group.name +
+                      '</p>' +
+                      '<ul class="email-preferences">' +
+                        preference_group.preferences.map(function (preference) {
+                        return '' +
+                          '<li class="preference" id="preference-id-' + preference.id + '">' +
+                            '<label class="label">' +
+                              '<span class="rule-checkbox">' +
+                                (preference.is_opted_in
+                                  ? (
+                                  '<input class="input" type="checkbox" id="preference-checkbox-' + preference.id + '" checked="checked"/>'
+                                  )
+                                  : (
+                                  '<input class="input" type="checkbox" id="preference-checkbox-' + preference.id + '"/>'
+                                  )
+                                ) +
+                                '<span class="bg"></span>' +
+                              '</span>' +
+                               preference.name +
+                            '</label>' +
+                          '</li>'
+                        }).join(' ') +
+                      '</ul>' +
+                    '</div>' +
+                    '<div class="email-preferences-actions">' +
+                      '<button class="btn" id="preferences-button">' + translation.button_update + '</button>' +
+                    '</div>' +
+                  '</div>'
+                   : ''
+                  ) +
+                  '<footer class="footer">' +
+                    (is_suppressed
+                      ? (
+                        '<p id="footer-text">' + translation.footer.text.resubscribe + '</p>' +
+                        '<button class="btn" id="footer-button" data-unsubscribed="true">' + translation.footer.button.resubscribe + '</button>'
+                      ) : (
+                        '<p id="footer-text">' + translation.footer.text.unsubscribe + '</p>' +
+                        '<button class="btn -secondary" id="footer-button">' + translation.footer.button.unsubscribe + '</button>'
+                      )
+                    ) +
+                  '</footer>' +
+                '</div>';
+            }
+
+            function getInitialTitle(has_preferences, is_suppressed, preference_group, unsubscribed_preference_id) {
+                var translation = getTranslations();
+                if (has_preferences) {
+                    if (is_suppressed) {
+                        return translation.title.unsubscribed;
+                    }
+                    var unsubscribed_preference = getPreference(unsubscribed_preference_id, preference_group.preferences);
+                    return unsubscribed_preference && unsubscribed_preference.is_opted_in
+                        ? translation.title.preferences
+                        : translation.title.common + ' <b>' + unsubscribed_preference.name + '</b> !'
+                } else {
+                    return is_suppressed ? translation.title.unsubscribed : translation.title.subscribed;
+                }
+            }
+
+            function getParameterByName(name) {
+                name = name.replace(/[\[\]]/g, '\\$&');
+                var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                    results = regex.exec(window.location.href);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+
+            function listenToggleSubscribe(subscriber_id, account_id) {
+                var preferences_title = document.querySelector('#preferences-title'),
+                    preferences_container = document.querySelector('#preferences-content'),
+                    footer_text = document.querySelector('#footer-text'),
+                    footer_button = document.querySelector('#footer-button'),
+                    translation = getTranslations(),
+                    url;
+
+                if (footer_button) {
+
+                    footer_button.addEventListener('click', function () {
+
+                        var is_subscribed = !footer_button.getAttribute('data-unsubscribed');
+
+                        if (is_subscribed) {
+
+                            url = '/preference/unsubscribe?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
+
+                            request({
+                                url: url,
+                                callback: function (response) {
+                                    if (response && response.success === 'true') {
+                                        preferences_title.innerHTML = translation.title.unsubscribing_success;
+                                        highLight(preferences_title);
+                                        hide(preferences_container);
+                                        footer_text.innerHTML = translation.footer.text.resubscribe;
+                                        footer_button.classList.remove('-secondary');
+                                        footer_button.setAttribute('data-unsubscribed', 'true');
+                                        footer_button.innerText = translation.footer.button.resubscribe;
+                                    }
+                                }
+                            });
+
+                        } else {
+
+                            url = '/preference/resubscribe?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
+
+                            request({
+                                url: url,
+                                callback: function (response) {
+                                    if (response && response.success === 'true') {
+                                        preferences_title.innerHTML = translation.title.resubscribed;
+                                        highLight(preferences_title);
+                                        show(preferences_container);
+                                        footer_text.innerHTML = translation.footer.text.unsubscribe;
+                                        footer_button.classList.add('-secondary');
+                                        footer_button.removeAttribute('data-unsubscribed');
+                                        footer_button.innerText = translation.footer.button.unsubscribe;
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+
+            function listenUpdatePreferences(subscriber_id, account_id, preference_group) {
+                var update_button = document.querySelector('#preferences-button');
+                var title = document.querySelector('#preferences-title');
+
+                if (update_button) {
+                    update_button.addEventListener('click', function () {
+                        preference_group.preferences.forEach(function (preference) {
+                            var checkbox = document.querySelector('#preference-checkbox-' + preference.id);
+                            preference.is_opted_in = checkbox && checkbox.checked;
+                        });
+
+                        var url = '/preference/update-subscriber-preferences';
+
+                        request({
+                            url: url,
+                            method: 'PATCH',
+                            body: { preference_group: preference_group },
+                            callback: function () {
+                                title.innerHTML = getTranslations().title.updating_success;
+                                highLight(title);
+                            }
+                        });
+                    });
+                }
+            }
+
+            function getBaseUrl() {
+                return getParameterByName('domain');
+            }
+
+            function getPreference(preference_id, preferences) {
+                return preferences.filter(function (preference) {
+                    return preference.id === preference_id;
+                })[0];
+            }
+
+            function request(params) {
+                var url = getBaseUrl() + params.url,
+                    method = params.method || 'GET',
+                    callback = params.callback,
+                    errorCallback = params.errorCallback,
+                    body = JSON.stringify(params.body),
+                    test = params.test;
+
+                callback = callback || function () {
+                };
+                errorCallback = errorCallback || function () {
+                };
+
+                if (test) {
+                    return setTimeout(callback, 500);
+                }
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open(method, url);
+                if (['PATCH', 'POST', 'PUT'].indexOf(method) !== -1) {
+                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                }
+                xhr.send(body);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        callback(JSON.parse(xhr.response));
+                    }
+                };
+                xhr.onerror = errorCallback;
+            }
+
+            function highLightPreference(preference_id) {
+                var unsubscribed_preference = document.querySelector('#preference-id-' + preference_id);
+                highLight(unsubscribed_preference);
+                setTimeout(function() {
+                    unsubscribed_preference.classList.remove('_yellow-fade');
+                }, 2000);
+            }
+
+            function highLight(element) {
+                if (element) {
+                    element.classList.remove('_yellow-fade');
+                    void element.offsetWidth;
+                    element.classList.add('_yellow-fade');
+                }
+            }
+
+            function hide(element) {
+                if (element) {
+                    element.setAttribute('hidden', 'true');
+                }
+            }
+
+            function show(element) {
+                if (element) {
+                    element.removeAttribute('hidden');
+                }
+            }
+
+        })();
+
+    </script>
+</div>
+</body>
+</html>
