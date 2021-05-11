@@ -6,14 +6,11 @@
     <meta charset="utf-8">
 </head>
 <body>
-
+Hey - custom page!
 <div id="rule-unsubscribe-portal" style="padding: 0 10px;">
     <style>
         #rule-unsubscribe-block [hidden] {
             display: none !important;
-        }
-        body {
-          background-color: pink;
         }
     </style>
     <script>
@@ -126,13 +123,10 @@
                             var url = '/preference/encrypted-preferences?account_id=' + account_id + '&preference_group_id=' + group_id + '&subscriber_id=' + subscriber_id;
                             request({
                                 url: url,
-                                callback: function(preferences) {
+                                callback: function(res) {
 
                                     subscriber.preference_id = preference_id;
-                                    subscriber.preference_group = preferences.preference_group;
-                                    subscriber.preference_group.preferences.sort(function (preferenceA, preferenceB) {
-                                        return preferenceA.order > preferenceB.order ? 1 : -1;
-                                    });
+                                    subscriber.preference_group = res.preference_group;
 
                                     rule_unsubscribe_portal.innerHTML = getPreferencesPage(subscriber);
 
