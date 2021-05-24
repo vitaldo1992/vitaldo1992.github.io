@@ -84,9 +84,10 @@ function load() {
     })();
 
     function loadStyles() {
+        var baseUrl = window.location.href.split('/').slice(0,4).join('/');
             styleUrls = [
             'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900&display=swap',
-            '/assets/css/style.css'
+                baseUrl + '/assets/css/style.css'
         ];
         styleUrls.forEach(function (styleUrl) {
             var link = document.createElement('link');
