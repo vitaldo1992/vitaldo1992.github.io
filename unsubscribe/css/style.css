@@ -1,0 +1,182 @@
+ul {
+    padding: 0;
+}
+
+ul>li {
+    list-style-type: none;
+}
+
+.unsubscribe-page {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.page-title {
+    font-size: 34px;
+    color: darkgray;
+    margin: 0 0 10px 0;
+}
+
+.page-description {
+    font-size: 18px;
+    color: darkgray;
+    margin: 0 0 100px 0;
+}
+
+.content {
+    width: 100%;
+}
+
+.category-name {
+    font-size: 24px;
+    color: black;
+    margin: 0 0 30px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid darkgray;
+}
+
+.email-preferences-group {
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.email-preferences {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.preference {
+    width: 22%;
+    min-width: 220px;
+    margin: 0 30px 36px 0;
+}
+
+.preference-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.description {
+    font-size: 16px;
+}
+
+.image {
+    width: 100%;
+    object-fit: cover;
+    border: 1px solid darkgray;
+}
+
+.pref-button {
+    position: relative;
+    width: fit-content;
+    padding: 2px 6px;
+    background-color:#EFEFEF;
+    border:1px solid darkgray;
+    overflow:auto;
+}
+
+.pref-button label:hover {
+   opacity: .8;
+    cursor: pointer;
+}
+
+.pref-button label {
+    float:left;
+    width:4.0em;
+}
+
+.pref-button label span {
+    display:block;
+    text-align:center;
+    padding:3px 0px;
+    font-size: 14px;
+}
+
+.pref-button label input {
+    position:absolute;
+    top:-20px;
+}
+
+/*.pref-button input:checked {*/
+/*    background-color: #71131c;*/
+/*    color: #fff;*/
+/*}*/
+
+.checked {
+    background-color: #71131c;
+    color: #fff;
+}
+
+.opt-in {
+    background-color: #71131c;
+    color: #fff;
+}
+
+.opt-out {
+    background-color: lightgray;
+    color: #595959;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0 0 40px 0;
+    padding-top: 12px;
+    border-top: 1px solid darkgray;
+}
+
+.footer-text {
+    font-size: 20px;
+    color: darkgray;
+    margin: 0 10px 0 0;
+}
+
+@media screen and (max-width: 1025px) {
+    .preference {
+        width: 29%;
+    }
+}
+
+@media screen and (max-width: 801px) {
+    .preference {
+        width: 45%;
+    }
+}
+
+@media screen and (max-width: 649px) {
+    .email-preferences {
+        justify-content: center;
+    }
+
+    .preference {
+        width: 95%;
+        margin: 0 0 70px 0;
+    }
+
+    .footer-text {
+        text-align: center;
+        margin: 0 10px 10px 0;
+    }
+}
+
+@media only screen
+and (device-width: 428px)
+and (device-height: 926px)
+and (-webkit-device-pixel-ratio: 3) {
+    .email-preferences {
+        justify-content: center;
+    }
+
+    .preference {
+        width: 95%;
+        margin: 0 0 70px 0;
+    }
+
+    .footer-text {
+        text-align: center;
+        margin: 0 10px 10px 0;
+    }
+}
