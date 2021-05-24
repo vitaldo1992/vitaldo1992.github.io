@@ -187,9 +187,8 @@ function load() {
                                             )
                                     ) +
                                     '</li>'
-                            }).join(' ')
+                            }).join(' ') + '</ul>'
                     }).join(' ') +
-                    '</ul>' +
             '</div>' +
             '<footer class="footer">' +
             (is_subscribed
