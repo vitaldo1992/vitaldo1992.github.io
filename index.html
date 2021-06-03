@@ -348,9 +348,11 @@
 
                 var xhr = new XMLHttpRequest();
 
-                xhr.open(method, url);
+                xhr.open(method, url, true);
                 if (['PATCH', 'POST', 'PUT'].indexOf(method) !== -1) {
                     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhr.setRequestHeader("Cache-Control", "no-cache");
+                    xhr.setRequestHeader("Pragma", "no-cache");
                 }
                 xhr.send(body);
 
