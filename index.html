@@ -107,8 +107,11 @@
                 request({
                     url: '/check-suppression?account_id=' + account_id + '&subscriber_id=' + subscriber_id,
                     callback: function (subscriber) {
-                        subscriber.is_suppressed = !!is_suppressed || subscriber.is_suppressed;                      
-                        removeParameter('is_suppressed');
+                        console.log(subscriber.is_suppressed);
+                        debugger;
+                        subscriber.is_suppressed = !!is_suppressed || subscriber.is_suppressed;
+                        console.log(is_suppressed);
+                        // removeParameter('is_suppressed');
                         if (preference_id && group_id) {
                             var url = '/preference/encrypted-preferences?account_id=' + account_id + '&preference_group_id=' + group_id + '&subscriber_id=' + subscriber_id;
                             request({
