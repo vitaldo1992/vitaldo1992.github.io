@@ -251,15 +251,19 @@ function load() {
                     var checkbox = document.querySelector('#preference-checkbox-' + preference.id);
                     preference.is_opted_in = checkbox && checkbox.checked;
                 });
+                var pref_element = event.target.parentNode.parentNode;
+                var pref_text = pref_element.querySelector('span');
                 if(!event.target.hasAttribute('checked')) {
-                    event.target.parentNode.parentNode.classList.add('checked');
-                    event.target.parentNode.parentNode.classList.remove('opt-out');
+                    pref_element.classList.add('checked');
+                    pref_element.classList.remove('opt-out');
                     event.target.setAttribute('checked', 'true');
+                    pref_text.textContent = 'Subscribed';
                 } else {
-                    event.target.parentNode.parentNode.classList.add('opt-out');
-                    event.target.parentNode.parentNode.classList.remove('opt-in');
-                    event.target.parentNode.parentNode.classList.remove('checked');
+                    pref_element.classList.add('opt-out');
+                    pref_element.classList.remove('opt-in');
+                    pref_element.classList.remove('checked');
                     event.target.removeAttribute('checked');
+                    pref_text.textContent = 'Unsubscribed';
                 }
                 console.log('preference_group', preference_group)
                 var url = getBaseUrl() + '/preference/update-subscriber-preferences';
