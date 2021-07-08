@@ -195,9 +195,9 @@ function load() {
             (is_subscribed
                 ? (
                     '<p id="footer-text"  class="footer-text"> Inte langre intresserad? Avanmal dig till samtliga nuhetsbrev </p>' +
-                    '<button class="pref-button suppressed" id="footer-button">Avanmäl dig</button>'
+                    '<button class="footer-btn pref-button" id="footer-button">Avanmäl dig</button>'
                 ) : '<p id="footer-text"  class="footer-text"> Click here to resubscribe </p>' +
-                    '<button class="pref-button suppressed" id="footer-button" data-unsubscribed="false">Subscribe</button>'
+                    '<button class="footer-btn pref-button suppressed" id="footer-button" data-unsubscribed="false">Subscribe</button>'
             ) +
             '</footer>' +
             '</div>';
