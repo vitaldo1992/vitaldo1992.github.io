@@ -1,0 +1,109 @@
+[
+  {
+    "id": 1,
+    "name": "Nyhetsbrev",
+    "preferences": [
+      {
+        "name": "Morgonens nyheter",
+        "description": "Vad hände medan du sov? Morgonbrevet ger dig de viktigaste nyheterna och de mest lästa artiklarna på sydsvenskan.se under den tidiga morgonen.",
+        "img": "assets/images/SYD_morgonensnyheter_980x588.png"
+      },
+      {
+        "name": "Chefredaktörens nyhetsbrev",
+        "description": "Varannan söndag samlar chefredaktören sin veckokrönika tillsammans med extra läsvärda artiklar från sajten. Ingår för alla Premium-prenumeranter.",
+        "img": "assets/images/SYD_chefredaktorensnyhetsbrev_980x588.png"
+      },
+      {
+        "name": "Dagligt mejl från Näringsliv",
+        "description": "Starta arbetsdagen med senaste nytt från Näringsliv.",
+        "img": "assets/images/SYD_dagligtmejlfrånnaringsliv.jpeg"
+      },
+      {
+        "name": "Veckobrev från Näringsliv",
+        "description": "Få veckans viktigaste nyheter från Näringsliv varje torsdag.",
+        "img": "assets/images/SYD_veckobrevframnaringsliv.jpeg"
+      },
+      {
+        "name": "Veckan som gick i Lund",
+        "description": "Summerar vår bevakning av Lund under veckan så att du inte missar något viktigt.",
+        "img": "assets/images/SYD_veckansomgickilund.jpeg"
+      },
+      {
+        "name": "Veckan som gick i Lomma",
+        "description": "Summerar vår bevakning av Lomma under veckan så att du inte missar något viktigt.",
+        "img": "assets/images/SYD_veckansomgickilomma.jpeg"
+      },
+      {
+        "name": "Veckan som gick i Vellinge-Näset",
+        "description": "Summerar vår bevakning av Vellinge-Näset under veckan så att du inte missar något\nviktigt.",
+        "img": "assets/images/SYD_veckansomgickivellingenaset.jpeg"
+      },
+      {
+        "name": "Veckan som gick i Staffanstorp",
+        "description": "Summerar vår bevakning av Staffanstorp under veckan så att du inte missar något\nviktigt.",
+        "img": "assets/images/SYD_veckansomgickistaffanstorp.jpeg"
+      },
+      {
+        "name": "Veckan som gick i Kävlinge-Lödde",
+        "description": "Summerar vår bevakning av Kävlinge och Lödde under veckan så att du inte missar\nnågot viktigt.",
+        "img": "assets/images/SYD_veckansomgickikavlingelodde.jpeg"
+      },
+      {
+        "name": "Veckan som gick i Svedala",
+        "description": "Summerar vår bevakning av Svedala under veckan så att du inte missar något viktigt.",
+        "img": "assets/images/SYD_veckansomgickisvedala.jpeg"
+      },
+      {
+        "name": "Allt om Malmö FF",
+        "description": "Med nyhetsbrevet missar du ingenting som skrivs om Malmö FF.",
+        "img": "assets/images/SYD_alltommalmoff.jpeg"
+      },
+      {
+        "name": "Senaste nytt om Malmö Redhawks",
+        "description": "Med nyhetsbrevet missar du inga nyheter som skrivs om Malmö Redhawks.",
+        "img": "assets/images/SYD_senastenyttommalmoredhawks.jpeg"
+      },
+      {
+        "name": "Vår skola",
+        "description": "Följ Sydsvenskans granskning av skolan.",
+        "img": "assets/images/SYD_varskola.jpeg"
+      },
+      {
+        "name": "Senaste nytt om Coronaviruset",
+        "description": "Få de senaste uppdateringarna om Coronaviruset i din mejl.",
+        "img": "assets/images/SYD_senastenyttomcoronaviruset.jpeg"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "För dig som kund/prenumerant",
+    "preferences": [
+      {
+        "name": "Bonnier rabatter",
+        "description": "Som prenumerant på Sydsvenskan har du möjlighet att få läsa andra tidningar och\ntidskrifter från Bonnier News, som till exempel DN, DI, Expressen och olika magasin till\nett extra förmånligt pris.",
+        "img": "assets/images/SYD_Bonnier-rabatter_980x588.png"
+      },
+      {
+        "name": "Prenumerationserbjudanden",
+        "description": "Här får du tex erbjudanden om att ge bort en prenumeration eller chansen att hoppa på\nrabatterade prenumerationserbjudanden.",
+        "img": "assets/images/SYD_Prenumerationserbjudanden_980x588.png"
+      },
+      {
+        "name": "Håll dig uppdaterad",
+        "description": "För att du ska få ut så mycket som möjligt av din prenumeration skickar vi ibland ut mejl\nmed tips och information om till exempel nya funktioner och extra intressant innehåll.",
+        "img": "assets/images/SYD_Hall-dig-uppdaterad_980x588.png"
+      },
+      {
+        "name": "Stjärnklubben",
+        "description": "Som prenumerant får du tillgång till vår kundklubb med riktigt bra rabatter, produkter,\nunika resor och föredrag. Det lönar sig att prenumerera.",
+        "img": "assets/images/SYD_Stjarnklubben_980x588.png"
+      },
+      {
+        "name": "Enkäter och undersökningar",
+        "description": "Vi jobbar ständigt på att bli bättre och behöver ibland våra läsares input i form av enkäter\noch undersökningar. Här får du en chans att vara med och påverka.",
+        "img": "assets/images/SYD_Enkater-och-undersokningar_980x588.png"
+      }
+    ]
+  }
+]
