@@ -1,3 +1,7 @@
+function load() {
+    var mydata = JSON.parse(data);
+    alert(mydata);
+}
 (function () {
 
     function getTranslations() {
@@ -82,8 +86,8 @@
     function loadStyles() {
         var baseUrl = window.location.href.split('/').slice(0,4).join('/');
             styleUrls = [
-            'http://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900&display=swap',
-            baseUrl + '/assets/css/style.css'
+            'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900&display=swap',
+                baseUrl + '/assets/css/style.css'
         ];
         styleUrls.forEach(function (styleUrl) {
             var link = document.createElement('link');
@@ -109,7 +113,7 @@
                         url: url,
                         callback: function(res) {
                             request( {
-                                url: '/preference-mock.json',
+                                url: 'preference-mock.json',
                                 callback: function(categories) {
                                     categories.forEach(function(category) {
                                         category.preferences.forEach(function(preference) {
@@ -136,6 +140,7 @@
                         }
                     });
                 } else {
+                    // rule_unsubscribe_portal.innerHTML = getPreferencesPage(subscriber);
                     listenToggleSubscribe(subscriber_id, account_id);
                 }
             }
@@ -143,7 +148,6 @@
     }
 
     function getPreferencesPage(subscriber, categories) {
-        console.log('cc', categories)
         var is_subscribed = subscriber.preference_group.preferences.some(function (preference) { return preference.is_opted_in === 1;} )
 
         return '' +
@@ -151,12 +155,12 @@
             '<p class="page-title">Sydsvenskans nyhetsbref</p>' +
             '<p class="page-description">Valj de nyhetsbrev som intresserar dig mest. Klicka pa knappen under respektiv nyhetsbrev for att anmala eller avanmala dig.</p>' +
             '<div class="content" id="preferences-content">' +
-                '<p class="category-name">Nyhetsbrev</p>' +
-                '<div class="email-preferences-group">' +
-                    '<ul class="email-preferences">' +
                     categories.map(function (category) {
-                        if(category.name === 'Nyhetsbrev') {
-                            return category.preferences.map(function (preference) {
+                            return '' +
+                              '<p class="category-name">' + category.name + '</p>' +
+                              '<div class="email-preferences-group">' +
+                              '<ul class="email-preferences">' +
+                                category.preferences.map(function (preference) {
                                 return '' +
                                     '<li class="preference" id="preference-id-' + preference.id + '">' +
                                     '<img  class="image" src="' + preference.img + '">' +
@@ -183,49 +187,8 @@
                                             )
                                     ) +
                                     '</li>'
-                            }).join(' ')
-                        }
+                            }).join(' ') + '</ul>'
                     }).join(' ') +
-                    '</ul>' +
-                '</div>' +
-                '<p class="category-name">För dig som kund/prenumerant</p>' +
-                '<div class="email-preferences-group">' +
-                    '<ul class="email-preferences">' +
-                        categories.map(function (category) {
-                            if(category.name === 'För dig som kund/prenumerant') {
-                                console.log('sub', subscriber)
-                                return category.preferences.map(function (preference) {
-                                    return '' +
-                                        '<li class="preference" id="preference-id-' + preference.id + '">' +
-                                        '<img  class="image" src="' + preference.img + '">' +
-                                        '<p class="preference-name">' +
-                                        preference.name +
-                                        '</p>' +
-                                        '<p class="description">' +
-                                        preference.description +
-                                        '</p>' +
-                                        (preference.is_opted_in
-                                                ? (
-                                                '<div class="pref-button  opt-in">' +
-                                                    '<label>' +
-                                                        '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '" checked="checked"/><span>Anmäl dig</span>' +
-                                                    '</label>' +
-                                                '</div>'
-                                                )
-                                                : (
-                                                '<div class="pref-button  opt-out">' +
-                                                    '<label>' +
-                                                        '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '"/><span>Avanmäl dig</span>' +
-                                                    '</label>' +
-                                                '</div>'
-                                                )
-                                        ) +
-                                        '</li>'
-                                }).join(' ')
-                            }
-                        }).join(' ') +
-                    '</ul>' +
-                '</div>' +
             '</div>' +
             '<footer class="footer">' +
             (is_subscribed
@@ -309,7 +272,6 @@
     }
 
     function request(params) {
-        // var url = getBaseUrl() + params.url,
         var url = params.url,
             method = params.method || 'GET',
             callback = params.callback,
