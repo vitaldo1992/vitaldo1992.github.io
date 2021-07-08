@@ -4,7 +4,7 @@
     "name": "Nyhetsbrev",
     "preferences": [
       {
-        "name": "Morgonens nyheter",
+        "name": "Morgonens nyhetsbrev",
         "description": "Vad hände medan du sov? Morgonbrevet ger dig de viktigaste nyheterna och de mest lästa artiklarna på sydsvenskan.se under den tidiga morgonen.",
         "img": "assets/images/SYD_morgonensnyheter_980x588.png"
       },
