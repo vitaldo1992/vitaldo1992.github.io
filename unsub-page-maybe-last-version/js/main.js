@@ -195,7 +195,7 @@ function load() {
             (is_subscribed
                 ? (
                     '<p id="footer-text"  class="footer-text"> Inte langre intresserad? Avanmal dig till samtliga nuhetsbrev </p>' +
-                    '<button class="footer-btn pref-button" id="footer-button">Avanmäl dig</button>'
+                    '<button class="footer-btn pref-button" id="footer-button">Unsubscribe</button>'
                 ) : '<p id="footer-text"  class="footer-text"> Click here to resubscribe </p>' +
                     '<button class="footer-btn pref-button suppressed" id="footer-button" data-unsubscribed="false">Subscribe</button>'
             ) +
@@ -219,11 +219,12 @@ function load() {
         if (footer_button) {
             footer_button.addEventListener('click', function () {
                 var is_subscribed = !footer_button.getAttribute('data-unsubscribed');
-
+                var footer_text = document.getElementById('footer-text');
                 if (is_subscribed) {
                     url = getBaseUrl() + '/preference/unsubscribe?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
                     footer_button.classList.add('suppressed');
-                    footer_button.textContent = 'Unsubscribed'
+                    footer_button.textContent = 'Resubscribe'
+                    footer_text.textContent = 'Click here to resubscribe';
                     footer_button.setAttribute('data-unsubscribed', 'true');
 
                     request({
@@ -233,7 +234,8 @@ function load() {
                     url = getBaseUrl() + '/preference/resubscribe?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
                     footer_button.classList.remove('suppressed');
                     footer_button.removeAttribute('data-unsubscribed');
-                    footer_button.textContent = 'Subscribed'
+                    footer_button.textContent = 'Unsubscribe'
+                    footer_text.textContent = 'Click here to unsubscribe';
                     request({
                         url: url
                     });
