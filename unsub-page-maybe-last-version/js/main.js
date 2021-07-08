@@ -195,8 +195,9 @@ function load() {
             (is_subscribed
                 ? (
                     '<p id="footer-text"  class="footer-text"> Inte langre intresserad? Avanmal dig till samtliga nuhetsbrev </p>' +
-                    '<button class="pref-button opt-out" id="footer-button" data-unsubscribed="true">Avanmäl dig</button>'
-                ) : ''
+                    '<button class="pref-button suppressed" id="footer-button">Avanmäl dig</button>'
+                ) : '<p id="footer-text"  class="footer-text"> Click here to resubscribe </p>' +
+                    '<button class="pref-button suppressed" id="footer-button" data-unsubscribed="false">Subscribe</button>'
             ) +
             '</footer>' +
             '</div>';
@@ -217,18 +218,35 @@ function load() {
 
         if (footer_button) {
             footer_button.addEventListener('click', function () {
-                var is_subscribed = footer_button.getAttribute('data-unsubscribed');
+                var is_subscribed = !footer_button.getAttribute('data-unsubscribed');
+                var elements = document.querySelectorAll('.email-preferences > .pref-button');
 
                 if (is_subscribed) {
                     url = getBaseUrl() + '/preference/unsubscribe?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
+                    footer_button.classList.add('suppressed');
+                    footer_button.setAttribute('data-unsubscribed', 'true');
 
                     request({
                         url: url,
                         callback: function (response) {
                             if (response && response.success === 'true') {
-                               var elements = document.getElementsByClassName('opt-in');
                                 for (var i = 0, len = elements.length; i < len; i++) {
-                                    elements[i].classList.remove('opt-in');
+                                    elements[i].classList.add('suppressed');
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    url = getBaseUrl() + '/preference/resubscribe?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
+                    footer_button.classList.remove('suppressed');
+                    footer_button.removeAttribute('data-unsubscribed');
+
+                    request({
+                        url: url,
+                        callback: function (response) {
+                            if (response && response.success === 'true') {
+                                for (var i = 0, len = elements.length; i < len; i++) {
+                                    elements[i].classList.remove('suppressed');
                                 }
                             }
                         }

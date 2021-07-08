@@ -113,7 +113,8 @@ ul>li {
     color: #fff;
 }
 
-.opt-out {
+.opt-out,
+.suppressed {
     background-color: lightgray;
     color: #595959;
 }
