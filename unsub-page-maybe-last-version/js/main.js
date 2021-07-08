@@ -256,12 +256,16 @@ function load() {
                 if(!event.target.hasAttribute('checked')) {
                     pref_element.classList.add('checked');
                     pref_element.classList.remove('opt-out');
+                    pref_element.style.background = '#71131c';
+                    pref_element.style.color = '#fff';
                     event.target.setAttribute('checked', 'true');
                     pref_text.textContent = 'Anmäl dig';
                 } else {
                     pref_element.classList.add('opt-out');
                     pref_element.classList.remove('opt-in');
                     pref_element.classList.remove('checked');
+                    pref_element.style.background = 'lightGray';
+                    pref_element.style.color = '#595959';
                     event.target.removeAttribute('checked');
                     pref_text.textContent = 'Avanmäl dig';
                 }
