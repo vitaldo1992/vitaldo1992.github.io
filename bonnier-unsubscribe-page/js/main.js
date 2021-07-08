@@ -1,7 +1,3 @@
-function load() {
-    var mydata = JSON.parse(data);
-    alert(mydata);
-}
 (function () {
 
     function getTranslations() {
@@ -113,7 +109,7 @@ function load() {
                         url: url,
                         callback: function(res) {
                             request( {
-                                url: 'http://localhost:63342/bonnier-unsubscribe-page/preference-mock.json',
+                                url: '/preference-mock.json',
                                 callback: function(categories) {
                                     categories.forEach(function(category) {
                                         category.preferences.forEach(function(preference) {
@@ -140,7 +136,6 @@ function load() {
                         }
                     });
                 } else {
-                    // rule_unsubscribe_portal.innerHTML = getPreferencesPage(subscriber);
                     listenToggleSubscribe(subscriber_id, account_id);
                 }
             }
@@ -231,9 +226,6 @@ function load() {
                         }).join(' ') +
                     '</ul>' +
                 '</div>' +
-            // '<div class="email-preferences-actions">' +
-            // '<button class="btn" id="preferences-button">' + translation.button_update + '</button>' +
-            // '</div>' +
             '</div>' +
             '<footer class="footer">' +
             (is_subscribed
@@ -316,12 +308,6 @@ function load() {
         return getParameterByName('domain');
     }
 
-    // function getPreference(preference_id, preferences) {
-    //     return preferences.filter(function (preference) {
-    //         return preference.id === preference_id;
-    //     })[0];
-    // }
-
     function request(params) {
         // var url = getBaseUrl() + params.url,
         var url = params.url,
@@ -354,34 +340,6 @@ function load() {
             }
         };
         xhr.onerror = errorCallback;
-    }
-
-    // function highLightPreference(preference_id) {
-    //     var unsubscribed_preference = document.querySelector('#preference-id-' + preference_id);
-    //     highLight(unsubscribed_preference);
-    //     setTimeout(function() {
-    //         unsubscribed_preference.classList.remove('_yellow-fade');
-    //     }, 2000);
-    // }
-
-    // function highLight(element) {
-    //     if (element) {
-    //         element.classList.remove('_yellow-fade');
-    //         void element.offsetWidth;
-    //         element.classList.add('_yellow-fade');
-    //     }
-    // }
-
-    function hide(element) {
-        if (element) {
-            element.setAttribute('hidden', 'true');
-        }
-    }
-
-    function show(element) {
-        if (element) {
-            element.removeAttribute('hidden');
-        }
     }
 
 })();
