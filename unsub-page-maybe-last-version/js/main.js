@@ -219,37 +219,23 @@ function load() {
         if (footer_button) {
             footer_button.addEventListener('click', function () {
                 var is_subscribed = !footer_button.getAttribute('data-unsubscribed');
-                var elements = document.querySelectorAll('.email-preferences .pref-button');
 
                 if (is_subscribed) {
                     url = getBaseUrl() + '/preference/unsubscribe?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
                     footer_button.classList.add('suppressed');
+                    footer_button.textContent = 'Unsubscribed'
                     footer_button.setAttribute('data-unsubscribed', 'true');
 
                     request({
-                        url: url,
-                        callback: function (response) {
-                            if (response && response.success === 'true') {
-                                for (var i = 0, len = elements.length; i < len; i++) {
-                                    elements[i].classList.add('suppressed');
-                                }
-                            }
-                        }
+                        url: url
                     });
                 } else {
                     url = getBaseUrl() + '/preference/resubscribe?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
                     footer_button.classList.remove('suppressed');
                     footer_button.removeAttribute('data-unsubscribed');
-
+                    footer_button.textContent = 'Subscribed'
                     request({
-                        url: url,
-                        callback: function (response) {
-                            if (response && response.success === 'true') {
-                                for (var i = 0, len = elements.length; i < len; i++) {
-                                    elements[i].classList.remove('suppressed');
-                                }
-                            }
-                        }
+                        url: url
                     });
                 }
             });
