@@ -219,7 +219,7 @@ function load() {
         if (footer_button) {
             footer_button.addEventListener('click', function () {
                 var is_subscribed = !footer_button.getAttribute('data-unsubscribed');
-                var elements = document.querySelectorAll('.email-preferences > .pref-button');
+                var elements = document.querySelectorAll('.email-preferences .pref-button');
 
                 if (is_subscribed) {
                     url = getBaseUrl() + '/preference/unsubscribe?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
