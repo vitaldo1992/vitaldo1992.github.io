@@ -122,7 +122,7 @@ function load() {
                                                     preference.is_opted_in = pref.is_opted_in;
                                                     preference.position = pref.position;
                                                     preference.id = pref.id;
-                                                    debugger;
+                 
                                                 }
                                             })
                                         })
