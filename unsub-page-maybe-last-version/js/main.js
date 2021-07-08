@@ -257,13 +257,13 @@ function load() {
                     pref_element.classList.add('checked');
                     pref_element.classList.remove('opt-out');
                     event.target.setAttribute('checked', 'true');
-                    pref_text.textContent = 'Subscribed';
+                    pref_text.textContent = 'Anmäl dig';
                 } else {
                     pref_element.classList.add('opt-out');
                     pref_element.classList.remove('opt-in');
                     pref_element.classList.remove('checked');
                     event.target.removeAttribute('checked');
-                    pref_text.textContent = 'Unsubscribed';
+                    pref_text.textContent = 'Avanmäl dig';
                 }
                 console.log('preference_group', preference_group)
                 var url = getBaseUrl() + '/preference/update-subscriber-preferences';
