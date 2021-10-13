@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>.rulemailer-subscriber-form {
+    font-family: Helvetica, sans-serif;
+    width: 500px;
+}
+
+.rulemailer-subscriber-form input {
+    display: block;
+    width: 100%;
+    margin: 5px 0 10px 0;
+    border: 0px solid #F2F2F5 !important;
+    background: #F2F2F5 !important;
+    font-size: 14px;
+    padding: 10px;
+    outline: none !important;
+    resize: none;
+}
+
+.rulemailer-subscriber-form input[type='checkbox'] {
+    display: inline-block;
+    width: auto;
+    margin-right: 10px;
+}
+
+.rulemailer-subscriber-form button {
+    display: block;
+    margin-top: 20px;
+    background: #262950;
+    color: #fff;
+    line-height: 1.33;
+    font-size: 14px;
+    padding: 8px 23px;
+    height: 37px;
+    cursor: pointer;
+    border: 2px solid #262950;
+    border-radius: 7px;
+}
+
+.rulemailer-subscriber-form button:hover {
+    background: transparent;
+    color: #262950
+}
+
+.rulemailer-email-check {
+    display: none !important;
+}</style>
+<div class="rulemailer-subscriber-form">
+    <form id="rule-optin-form" action="https://app.rule.io/subscriber-form/subscriber" method="POST"><input
+            type="hidden" value="51301" name="tags[]"><input type="hidden" name="token"
+                                                             value="b95ee3e5-74d7f7d-df85dd8-0ad6eaa-c15d92a-e10"><label>Email</label><input
+            type="email" placeholder="Email" name="rule_email" required="required"><label>Phone number</label><input
+            type="text" placeholder="Phone number" name="phone_number"><label class="rulemailer-email-check">Are you
+        machine?</label><input type="checkbox" name="email_field" class="rulemailer-email-check" value="1" tabindex="-1"
+                               autocomplete="off"><input type="hidden" name="language" value="en">
+        <button type="submit">Send</button>
+    </form>
+</div>
+</body>
+</html>
