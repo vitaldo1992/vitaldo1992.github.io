@@ -1,0 +1,13 @@
+/*Sydsvenskan*/
+
+:root {
+  --color-dark: #71131C;
+  --color-alt: #da1e42; /*anvÃ¤nds ej i nulÃ¤get*/
+  --color-black: #363636;
+  --color-bg: #FFEAE6; /*anvÃ¤nds ej i nulÃ¤get*/
+
+  --font-headline: tiempos-fine;
+  --font-subheadline: tiempos-headline;  
+  --font-text: inter-regular; 
+  --font-text-bold: inter-bold;  
+}
