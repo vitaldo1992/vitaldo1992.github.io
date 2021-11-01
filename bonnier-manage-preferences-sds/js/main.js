@@ -181,56 +181,57 @@ function load() {
         }).length;
 
         return '' +
-            '<div class="unsubscribe-page">' +
+          '<div class="unsubscribe-page">' +
             '<div class="logo_top"><img src="'+ logo_url +'" class="logo"></div>' +
-            "Manage your preferences" +
+            title_unsubscribed +
             '<p class="page-title">'+ page_title +'</p>' +
             '<p class="page-description">'+ page_description + 'Välj de nyhetsbrev som intresserar dig mest. Klicka på knappen under respektiv nyhetsbrev för att anmäla eller avanmäla dig.</p>' +
             '<div class="content" id="preferences-content">' +
-            categories.map(function (category) {
+              categories.map(function (category) {
                 return '' +
-                    '<p class="category-name">' + category.name + '</p>' +
-                    '<div class="email-preferences-group">' +
+                  '<p class="category-name">' + category.name + '</p>' +
+                  '<div class="email-preferences-group">' +
                     '<ul class="email-preferences">' +
                     category.preferences.map(function (preference) {
-                        return '' +
-                            '<li class="preference" id="preference-id-' + preference.id + '">' +
-                            '<img  class="image" src="' + preference.img + '">' +
-                            '<p class="preference-name">' +
+                      return '' +
+                        '<li class="preference" id="preference-id-' + preference.id + '">' +
+                          '<img  class="image" src="' + preference.img + '">' +
+                          '<p class="preference-name">' +
                             preference.name +
-                            '</p>' +
-                            '<p class="description">' +
+                          '</p>' +
+                          '<p class="description">' +
                             preference.description +
-                            '</p>' +
-                            (preference.is_opted_in
-                                    ? (
-                                        '<div class="pref-button opt-out">' +
-                                        '<label>' +
-                                        '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '" checked="checked"/><span>Avanmäl dig</span>' +
-                                        '</label>' +
-                                        '</div>'
-                                    )
-                                    : (
-                                        '<div class="pref-button  opt-in">' +
-                                        '<label>' +
-                                        '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '"/><span>Anmäl dig</span>' +
-                                        '</label>' +
-                                        '</div>'
-                                    )
-                            ) +
-                            '</li>'
-                    }).join(' ') + '</ul>'
+                          '</p>' +
+                          (preference.is_opted_in
+                            ? (
+                              '<div class="pref-button opt-out">' +
+                                '<label>' +
+                                  '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '" checked="checked"/><span>Avanmäl dig</span>' +
+                                '</label>' +
+                              '</div>'
+                            )
+                            : (
+                              '<div class="pref-button  opt-in">' +
+                                '<label>' +
+                                  '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '"/><span>Anmäl dig</span>' +
+                                '</label>' +
+                              '</div>'
+                            )
+                          ) +
+                        '</li>'
+                    }).join(' ') + '</ul>' +
+              '</div>'
             }).join(' ') +
             '</div>' +
             '<footer class="footer">' +
-            (is_subscribed
-                    ? (
-                        '<p id="footer-text"  class="footer-text"> Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev </p>' +
-                        '<button class="pref-button opt-out" id="footer-button" data-unsubscribed="true">Avanmäl dig</button>'
-                    ) : ''
-            ) +
+              (is_subscribed
+                ? (
+                  '<p id="footer-text"  class="footer-text"> Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev </p>' +
+                  '<button class="pref-button opt-out" id="footer-button" data-unsubscribed="true">Avanmäl dig</button>'
+                ) : ''
+              ) +
             '</footer>' +
-            '</div>';
+          '</div>';
     }
 
     function getParameterByName(name) {
