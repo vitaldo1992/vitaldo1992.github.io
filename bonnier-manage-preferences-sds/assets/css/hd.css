@@ -1,0 +1,14 @@
+/* HD-färger */
+:root {
+  --color-dark: #1D3965;
+  --color-alt: #007CBF;
+  --color-black: #363636;
+  --color-bg: #E8F3F7;
+  
+  
+  --font-headline: tiempos-fine;
+  --font-subheadline: tiempos-headline;  
+  --font-text: inter-regular; 
+  --font-text-bold: inter-bold;  
+}
+
