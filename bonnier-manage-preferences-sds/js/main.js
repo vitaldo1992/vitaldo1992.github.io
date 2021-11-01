@@ -183,7 +183,7 @@ function load() {
         return '' +
             '<div class="unsubscribe-page">' +
             '<div class="logo_top"><img src="'+ logo_url +'" class="logo"></div>' +
-            title_unsubscribed +
+            "Manage your preferences" +
             '<p class="page-title">'+ page_title +'</p>' +
             '<p class="page-description">'+ page_description + 'Välj de nyhetsbrev som intresserar dig mest. Klicka på knappen under respektiv nyhetsbrev för att anmäla eller avanmäla dig.</p>' +
             '<div class="content" id="preferences-content">' +
