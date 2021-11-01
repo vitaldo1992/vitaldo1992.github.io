@@ -1,0 +1,269 @@
+/* :root {
+ Syd-fÃ¤rger 
+  --color-dark: #71131C;
+  --color-alt: #da1e42; /*anvÃ¤nds ej i nulÃ¤get*/
+  --color-black: #363636;
+  --color-bg: #FFEAE6; /*anvÃ¤nds ej i nulÃ¤get*/
+
+  --font-headline: tiempos-fine;
+  --font-subheadline: tiempos-headline;  
+  --font-text: inter-regular; 
+  --font-text-bold: inter-bold;  
+}
+
+*/
+
+/* HD-fÃ¤rger
+:root {
+  --color-dark: #1D3965;
+  --color-alt: #007CBF;
+  --color-black: #363636;
+  --color-bg: #E8F3F7;
+}
+
+*/
+
+@font-face {
+  font-family: 'tiempos-headline';
+  src: url('../fonts/Tiempos-Headline-Semibold.otf') format('otf');
+} 
+@font-face {
+  font-family: 'tiempos-fine';
+  src: url('../fonts/Tiempos-Headline-Semibold.otf');
+}
+@font-face {
+  font-family: "tiempos-regular"; 
+  src: url('../fonts/TiemposText-Regular.otf');
+}
+@font-face {
+  font-family: "inter-regular"; 
+  src: url("../fonts/inter-Regular.woff") format('woff');
+  font-weight: normal;
+}   
+@font-face {
+  font-family: "inter-bold";
+  src: url("../fonts/inter-Bold.woff") format('woff');
+  font-weight: bold;
+} 
+	
+ul {
+    padding: 0;
+}
+
+ul>li {
+    list-style-type: none;
+}
+
+p {
+	color: var(--color-black);
+}
+
+.unsubscribe-page {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.logo {
+    max-height: 80px;
+    max-width: 100%;
+    padding: 20px 0;
+}
+
+.page-title {
+    font-size: 34px;
+    margin: 0 0 10px 0;
+	font-family: 'tiempos-fine', Helvetica, Arial, "sans-serif";
+	
+}
+
+.page-description {
+    font-size: 18px;
+    margin: 0 0 20px 0;
+	font-family: 'tiempos-regular', Helvetica, Arial, "sans-serif";
+}
+
+.content {
+    width: 100%;
+}
+
+.category-name {
+    font-size: 24px;
+    margin: 0 0 30px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid darkgray;
+	font-family: 'tiempos-fine', Helvetica, Arial, "sans-serif";
+}
+
+.email-preferences-group {
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.email-preferences {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.preference {
+    width: 22%;
+    min-width: 220px;
+    margin: 0 15px 36px 15px;
+	position: relative;
+}
+
+.preference-name {
+    font-size: 16px;
+	font-family: 'tiempos-fine', Helvetica, Arial, "sans-serif";
+}
+
+.description {
+    font-size: 14px;
+	font-family: 'tiempos-regular', Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
+	padding-bottom: 30px;
+}
+
+.image {
+    width: 100%;
+    object-fit: cover;
+}
+.pref-button {
+	position: relative;
+	padding: 8px 0;
+    background-color:#EFEFEF;
+	border-radius: 3px;
+    overflow:auto;
+	font-family: 'inter-bold', Helvetica, Arial, "sans-serif";
+	text-align: center;
+}
+.preference .pref-button {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+}
+
+.footer .pref-button {
+    width: 200px;
+	max-width: 100%;
+	border: none;
+}
+
+
+.pref-button label:hover {
+   opacity: .8;
+    cursor: pointer;
+}
+
+.pref-button label {
+    /*float:left;*/
+    /*width:5.0em;*/
+}
+
+.pref-button label span {
+    display:block;
+    font-size: 12px;
+}
+
+.pref-button label input {
+    position:absolute;
+    top:-20px;
+}
+
+/*.pref-button input:checked {*/
+/*    background-color: #71131c;*/
+/*    color: #fff;*/
+/*}*/
+
+.checked {
+    background-color: var(--color-dark);
+    color: #fff;
+}
+
+.opt-in {
+    background-color: var(--color-dark);
+    color: #fff;
+}
+
+.opt-out {
+    background-color: lightgray;
+    color: #595959;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0 0 40px 0;
+    padding-top: 12px;
+    border-top: 1px solid darkgray;
+}
+
+.footer-text {
+    font-size: 20px;
+    margin: 0 10px 0 0;
+	font-family: 'inter-regular', Helvetica, Arial, "sans-serif";
+}
+
+@media screen and (max-width: 1025px) {
+    .preference {
+        width: 29%;
+    }
+}
+
+@media screen and (max-width: 801px) {
+    .preference {
+        width: 45%;
+    }
+}
+
+@media screen and (max-width: 649px) {
+    .email-preferences {
+        justify-content: center;
+    }
+
+    .preference {
+        width: 95%;
+        margin: 0 0 70px 0;
+    }
+
+    .footer-text {
+        text-align: center;
+        margin: 0 10px 10px 0;
+    }
+}
+
+@media only screen
+and (device-width: 428px)
+and (device-height: 926px)
+and (-webkit-device-pixel-ratio: 3) {
+    .email-preferences {
+        justify-content: center;
+    }
+
+    .preference {
+        width: 95%;
+        margin: 0 0 70px 0;
+    }
+
+    .footer-text {
+        text-align: center;
+        margin: 0 10px 10px 0;
+    }
+}
+
+.opt-out-head{ 
+		background-color: #eee;
+		color: var(--color-dark);
+        font-family: 'inter-bold', Helvetica, Arial, "sans-serif";
+        padding: 10px;
+		margin: 0 0 10px 0;
+		width: auto;
+		display: inline-block;
+		text-align: center;
+		white-space: nowrap;
+        
+        }
+
+
+
