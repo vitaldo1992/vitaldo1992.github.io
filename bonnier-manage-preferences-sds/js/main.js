@@ -30,10 +30,10 @@ function load() {
         case "vitaldo1992.github.io":
         	var site_name = "Sydsvenskan.se";
         	var logo_url = "https://kundservice.bonniernewslocal.se/sydsvenskan/wp-content/uploads/sites/39/2021/03/sds-logga.png";
-        	var json_url =  "/assets/settings/preferences-sydsvenskan.json";
+        	var json_url =  "assets/settings/preferences-sydsvenskan.json";
 			var page_title = "Hantera dina nyhetsbrev";
         	var bg_color = "#71131C";
-			load_css("/assets/css/sydsvenskan.css");
+			load_css("assets/css/sydsvenskan.css");
         break;
 
   	default:
