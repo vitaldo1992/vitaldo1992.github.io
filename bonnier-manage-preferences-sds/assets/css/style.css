@@ -97,6 +97,7 @@ p {
 .email-preferences-group {
     width: 100%;
     margin-bottom: 50px;
+    overflow: hidden;
 }
 
 .email-preferences {
