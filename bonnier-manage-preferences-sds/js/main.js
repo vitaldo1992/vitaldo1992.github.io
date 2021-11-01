@@ -27,7 +27,7 @@ function load() {
 			load_css("/assets/css/hd.css");
         break;
 
-        case "hanteranyhetsbrev.sydsvenskan.se":
+        case "vitaldo1992.github.io":
         	var site_name = "Sydsvenskan.se";
         	var logo_url = "https://kundservice.bonniernewslocal.se/sydsvenskan/wp-content/uploads/sites/39/2021/03/sds-logga.png";
         	var json_url =  "/assets/settings/preferences-sydsvenskan.json";
