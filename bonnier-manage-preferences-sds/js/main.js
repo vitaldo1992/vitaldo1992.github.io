@@ -282,7 +282,7 @@ function load() {
                                     )
                             ) +
                             '</li>'
-                    }).join(' ') + '</ul>'
+                    }).join(' ') + '</ul></div>'
             }).join(' ') +
             '</div>' +
             '<footer class="footer">' +
