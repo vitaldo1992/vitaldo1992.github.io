@@ -199,19 +199,9 @@ function load() {
 
     /*************************NY***********/
 
-    function getInitialTitle(has_preferences, is_suppressed, preference_group, unsubscribed_preference_id) {
+    function getInitialTitle(is_suppressed) {
         var translation = getTranslations();
-        if (has_preferences) {
-            if (is_suppressed) {
-                return translation.title.unsubscribed;
-            }
-            var unsubscribed_preference = getPreference(unsubscribed_preference_id, preference_group.preferences);
-            return unsubscribed_preference && unsubscribed_preference.is_opted_in
-                ? translation.title.preferences
-                : translation.title.common + ' <b>' + unsubscribed_preference.name + '</b>!'
-        } else {
-            return is_suppressed ? translation.title.unsubscribed : translation.title.subscribed;
-        }
+        return is_suppressed ? translation.title.unsubscribed : null;
     }
 
 
@@ -229,20 +219,13 @@ function load() {
 
         /*******************/
 
-        var unsubscribed_preference_id = subscriber.preference_id,
-            preference_group = subscriber.preference_group,
-            has_preferences = !!preference_group,
-            is_suppressed = subscriber.is_suppressed,
-            translation = getTranslations(),
-            visibility_attribute = is_suppressed ? 'hidden="true"' : '';
+        var is_suppressed = subscriber.is_suppressed;
 
         /********************/
 
         var is_subscribed = subscriber.preference_group.preferences.some(function (preference) { return preference.is_opted_in === 1;} )
-        var title_off = getInitialTitle(has_preferences, is_suppressed, preference_group, unsubscribed_preference_id);
-        if(title_off){
-            var title_unsubscribed = "<p class='opt-out-head blink' id='opt-out-head-top'>" + title_off + "</p>";
-        };
+        var title_off = getInitialTitle(is_suppressed);
+        var title_unsubscribed = "<p class='opt-out-head blink'" + (title_off ? title_off : " style='display: none'") +  " id='opt-out-head-top'>" + title_off + "</p>";
         return '' +
             '<div class="unsubscribe-page">' +
             '<div class="logo_top"><img src="'+ logo_url +'" class="logo"></div>' +
