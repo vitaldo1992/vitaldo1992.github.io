@@ -179,6 +179,7 @@ p {
     display: none;
 }
 
+
 .pref-button {
     font-size: 12px;
     background-color: var(--color-dark);
@@ -186,6 +187,7 @@ p {
     cursor: pointer;
 }
 
+.footer-button,
 input:checked + .pref-button {
     background-color: lightgray;
     color: #595959;

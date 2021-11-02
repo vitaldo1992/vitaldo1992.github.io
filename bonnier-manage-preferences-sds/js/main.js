@@ -259,10 +259,10 @@ function load() {
               (is_suppressed
                 ? (
                     '<p id="footer-text"  class="footer-text"> Vill du få nyheter? </p>' +
-                    '<button class="pref-button opt-out" id="footer-button" data-unsubscribed="true">Prenumerera igen</button>'
+                    '<button class="footer-button" id="footer-button" data-unsubscribed="true">Prenumerera igen</button>'
                 ) : (
                     '<p id="footer-text"  class="footer-text"> Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev </p>' +
-                    '<button class="pref-button opt-out" id="footer-button" data-unsubscribed="false">Avanmäl dig</button>'
+                    '<button class="footer-button" id="footer-button" data-unsubscribed="false">Avanmäl dig</button>'
                 )
               ) +
             '</footer>' +
@@ -281,7 +281,7 @@ function load() {
     function listenToggleSubscribe(subscriber_id, account_id) {
         var footer_button = document.querySelector('#footer-button'),
             footer_text = document.querySelector('#footer-text'),
-            unsubscribe_page = document.getElementById('#unsubscribe-page');
+            preferences_content = document.getElementById('preferences-content');
 
         if (footer_button) {
             footer_button.addEventListener('click', function () {
@@ -296,11 +296,11 @@ function load() {
                                 if (is_subscribed) {
                                     footer_text.textContent = 'Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev';
                                     footer_button.textContent = 'Avanmäl dig';
-                                    unsubscribe_page.classList.remove('suppressed');
+                                    preferences_content.classList.remove('suppressed');
                                 } else {
                                     footer_text.textContent = 'Vill du få nyheter?';
                                     footer_button.textContent = 'Prenumerera igen';
-                                    unsubscribe_page.classList.add('suppressed');
+                                    preferences_content.classList.add('suppressed');
                                 }
                         }
                     }
