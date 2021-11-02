@@ -175,19 +175,23 @@ p {
 /*    color: #fff;*/
 /*}*/
 
-.checked {
+.checkbox {
+    display: none;
+}
+
+.pref-button {
     background-color: var(--color-dark);
     color: #fff;
 }
 
-.opt-in {
-    background-color: var(--color-dark);
-    color: #fff;
-}
-
-.opt-out {
+input:checked + .pref-button {
     background-color: lightgray;
     color: #595959;
+}
+
+.suppressed .pref-button {
+    background-color: #EFEFEF !important;
+    color: var(--color-black) !important;
 }
 
 .footer {

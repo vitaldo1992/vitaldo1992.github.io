@@ -240,18 +240,15 @@ function load() {
                         '</p>' +
                         (preference.is_opted_in
                           ? (
-                            '<div class="pref-button opt-out">' +
-                              '<label>' +
-                                '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '" checked="checked"/><span>Avanmäl dig</span>' +
-                              '</label>' +
-                            '</div>'
-                          )
-                          : (
-                            '<div class="pref-button  opt-in">' +
-                              '<label>' +
-                                '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '"/><span>Anmäl dig</span>' +
-                              '</label>' +
-                            '</div>'
+                            '<input class="checkbox" type="checkbox" id="preference-checkbox-' + preference.id + '" checked="checked"/>' +
+                            '<label class="pref-button" for="preference-checkbox-' + preference.id + '">' +
+                              'Avanmäl dig' +
+                            '</label>'
+                            ) : (
+                            '<input class="checkbox" type="checkbox" id="preference-checkbox-' + preference.id + '"/>' +
+                            '<label class="pref-button" for="preference-checkbox' + preference.id + '">' +
+                              'Anmäl dig' +
+                            '</label>'
                           )
                         ) +
                         '</li>'
@@ -283,13 +280,13 @@ function load() {
 
     function listenToggleSubscribe(subscriber_id, account_id) {
         var footer_button = document.querySelector('#footer-button'),
-            footer_text = document.querySelector('#footer-text');
+            footer_text = document.querySelector('#footer-text'),
+            unsubscribe_page = document.getElementById('#unsubscribe-page');
 
         if (footer_button) {
             footer_button.addEventListener('click', function () {
                 var is_subscribed = !JSON.parse(footer_button.getAttribute('data-unsubscribed'));
                 var url = getBaseUrl() + '/preference/' + (is_subscribed ? 'unsubscribe' : 'resubscribe') + '?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
-
                     request({
                         url: url,
                         callback: function (response) {
@@ -299,18 +296,12 @@ function load() {
                                 if (is_subscribed) {
                                     footer_text.textContent = 'Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev';
                                     footer_button.textContent = 'Avanmäl dig';
+                                    unsubscribe_page.classList.remove('suppressed');
                                 } else {
                                     footer_text.textContent = 'Vill du få nyheter?';
                                     footer_button.textContent = 'Prenumerera igen';
+                                    unsubscribe_page.classList.add('suppressed');
                                 }
-                                document.querySelectorAll('.preference .pref-button').forEach(function(element) {
-                                    var input = element.querySelector('.btn');
-                                    if (!is_subscribed) {
-                                        element.classList.remove('opt-in');
-                                    } else if (!input.checked) {
-                                        element.classList.add('opt-in');
-                                    }
-                                });
                         }
                     }
                 });
@@ -321,51 +312,21 @@ function load() {
 
     function listenUpdatePreferences(subscriber_id, account_id, preference_group) {
 
+        document.querySelectorAll('.checkbox').forEach( function(checkbox) {
+            checkbox.addEventListener('change', function (event) {
 
-
-
-        document.addEventListener('click', function (event) {
-
-
-            /* XXX ***/
-            function show_stat(){
-                var elem = document.getElementById("opt-out-head-top");
-                if(elem){
-                    elem.textContent = "Inställningarna har uppdaterats.";
-                    elem.style.color="#000";
-                    elem.style.display="inline-block";
-                }
-            }
-
-            if (event.target instanceof HTMLInputElement) {
                 preference_group.preferences.forEach(function (preference) {
                     var checkbox = document.querySelector('#preference-checkbox-' + preference.id);
-                    preference.is_opted_in = checkbox && checkbox.checked;
-                    show_stat(); /*xx*/
+                    preference.is_opted_in = checkbox.checked;
+                    show_stat();
                 });
-                var pref_element = event.target.parentNode.parentNode;
-                var pref_text = pref_element.querySelector('span');
-                if(!event.target.hasAttribute('checked')) {
-                    pref_element.classList.add('checked');
-                    pref_element.classList.remove('opt-out');
-                    /*pref_element.style.background = bg_color;//'#71131c';
-                    pref_element.style.color = '#fff';*/
-                    pref_element.style.background = 'lightGray';
-                    pref_element.style.color = '#595959';
-                    event.target.setAttribute('checked', 'true');
-                    pref_text.textContent = 'Avanmäl dig';
+
+                var checkbox_label = checkbox.parentNode.querySelector('label');
+                if(checkbox.checked) {
+                    checkbox_label.textContent = 'Avanmäl dig';
                 } else {
-                    pref_element.classList.add('opt-out');
-                    pref_element.classList.remove('opt-in');
-                    pref_element.classList.remove('checked');
-                    /*pref_element.style.background = 'lightGray';
-                    pref_element.style.color = '#595959';*/
-                    pref_element.style.background = bg_color;//'#71131c';
-                    pref_element.style.color = '#fff';
-                    event.target.removeAttribute('checked');
-                    pref_text.textContent = 'Anmäl dig';
+                    checkbox_label.textContent = 'Anmäl dig';
                 }
-                /*  console.log('preference_group', preference_group)*/
                 var url = getBaseUrl() + '/preference/update-subscriber-preferences';
 
                 request({
@@ -374,41 +335,21 @@ function load() {
                     body: { preference_group: preference_group },
                     callback: function () {}
                 });
-            }
 
 
+            });
         });
     }
 
-    /*  function listenUpdatePreferences(subscriber_id, account_id, preference_group) {
-          document.addEventListener('click', function (event) {
-              if (event.target instanceof HTMLInputElement) {
-                  preference_group.preferences.forEach(function (preference) {
-                      var checkbox = document.querySelector('#preference-checkbox-' + preference.id);
-                      preference.is_opted_in = checkbox && checkbox.checked;
-                  });
-                  if(!event.target.hasAttribute('checked')) {
-                      event.target.parentNode.parentNode.classList.add('checked');
-                      event.target.parentNode.parentNode.classList.remove('opt-out');
-                      event.target.setAttribute('checked', 'true');
-                  } else {
-                      event.target.parentNode.parentNode.classList.add('opt-out');
-                      event.target.parentNode.parentNode.classList.remove('opt-in');
-                      event.target.parentNode.parentNode.classList.remove('checked');
-                      event.target.removeAttribute('checked');
-                  }
-                  console.log('preference_group', preference_group)
-                  var url = getBaseUrl() + '/preference/update-subscriber-preferences';
-
-                  request({
-                      url: url,
-                      method: 'PATCH',
-                      body: { preference_group: preference_group },
-                      callback: function () {}
-                  });
-              }
-          });
-      } */
+    /* XXX ***/
+    function show_stat(){
+        var elem = document.getElementById("opt-out-head-top");
+        if(elem){
+            elem.textContent = "Inställningarna har uppdaterats.";
+            elem.style.color="#000";
+            elem.style.display="inline-block";
+        }
+    }
 
     function getBaseUrl() {
         return getParameterByName('domain');
