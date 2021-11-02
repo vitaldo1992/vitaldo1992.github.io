@@ -333,7 +333,7 @@ function load() {
 
                     elem.textContent = "Inställningarna har uppdaterats.";
                     elem.style.color="#000";
-                    /*elem.style.opacity="0.5"; */
+                    elem.style.display="block";
                 }
             }
             /* document.getElementById('opt-out-head-top').style.opacity="0"; */
