@@ -315,10 +315,9 @@ function load() {
         document.querySelectorAll('.checkbox').forEach( function(checkbox) {
             checkbox.addEventListener('change', function (event) {
 
-                console.log(checkbox);
                 preference_group.preferences.forEach(function (preference) {
-                    var checkbox = document.querySelector('#preference-checkbox-' + preference.id);
-                    preference.is_opted_in = checkbox.checked;
+                    var preference_checkbox = document.querySelector('#preference-checkbox-' + preference.id);
+                    preference.is_opted_in = preference_checkbox.checked;
                     show_stat();
                 });
 
