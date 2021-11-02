@@ -180,6 +180,7 @@ p {
 }
 
 .pref-button {
+    font-size: 12px;
     background-color: var(--color-dark);
     color: #fff;
 }
