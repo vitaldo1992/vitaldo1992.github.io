@@ -189,7 +189,6 @@ function load() {
                         }
                     });
                 } else {
-                    // rule_unsubscribe_portal.innerHTML = getPreferencesPage(subscriber);
                     listenToggleSubscribe(subscriber_id, account_id);
                 }
             }
@@ -204,15 +203,7 @@ function load() {
         return is_suppressed ? translation.title.unsubscribed : null;
     }
 
-
-    function getPreference(preference_id, preferences) {
-        return preferences.filter(function (preference) {
-            return preference.id === preference_id;
-        })[0];
-    }
-
     /*************************NY***********/
-
 
 
     function getPreferencesPage(subscriber, categories) {
@@ -303,24 +294,25 @@ function load() {
                         url: url,
                         callback: function (response) {
                             if (response && response.success === 'true') {
+                                is_subscribed = !is_subscribed;
                                 if (is_subscribed) {
-                                    footer_text.textContent = 'Vill du få nyheter?';
-                                    footer_button.textContent = 'Prenumerera igen';
-                                    footer_button.setAttribute('data-unsubscribed', 'true');
-                                } else {
                                     footer_text.textContent = 'Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev';
                                     footer_button.textContent = 'Avanmäl dig';
                                     footer_button.setAttribute('data-unsubscribed', 'false');
+                                } else {
+                                    footer_text.textContent = 'Vill du få nyheter?';
+                                    footer_button.textContent = 'Prenumerera igen';
+                                    footer_button.setAttribute('data-unsubscribed', 'true');
                                 }
                                 document.querySelectorAll('.preference .pref-button').forEach(function(element) {
                                     var input = element.querySelector('.btn');
-                                    if (is_subscribed && input.checked) {
-                                        element.classList.add('opt-in');
+                                    if (is_subscribed) {
+                                        if (!input.checked) {
+                                            element.classList.add('opt-in');
+                                        } else {
+                                            element.classList.remove('opt-in');
+                                        }
                                     }
-                                    if (!is_subscribed && input.checked) {
-                                        element.classList.remove('opt-in');
-                                    }
-
                                 });
                         }
                     }
