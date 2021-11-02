@@ -295,23 +295,20 @@ function load() {
                         callback: function (response) {
                             if (response && response.success === 'true') {
                                 is_subscribed = !is_subscribed;
+                                footer_button.setAttribute('data-unsubscribed', is_subscribed);
                                 if (is_subscribed) {
                                     footer_text.textContent = 'Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev';
                                     footer_button.textContent = 'Avanmäl dig';
-                                    footer_button.setAttribute('data-unsubscribed', 'false');
                                 } else {
                                     footer_text.textContent = 'Vill du få nyheter?';
                                     footer_button.textContent = 'Prenumerera igen';
-                                    footer_button.setAttribute('data-unsubscribed', 'true');
                                 }
                                 document.querySelectorAll('.preference .pref-button').forEach(function(element) {
                                     var input = element.querySelector('.btn');
-                                    if (is_subscribed) {
-                                        if (!input.checked) {
-                                            element.classList.remove('opt-in');
-                                        } else {
-                                            element.classList.add('opt-in');
-                                        }
+                                    if (!is_subscribed) {
+                                        element.classList.remove('opt-in');
+                                    } else if (input.checked) {
+                                        element.classList.add('opt-in');
                                     }
                                 });
                         }
