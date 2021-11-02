@@ -296,7 +296,7 @@ function load() {
 
         if (footer_button) {
             footer_button.addEventListener('click', function () {
-                var is_subscribed = footer_button.getAttribute('data-unsubscribed');
+                var is_subscribed = !JSON.parse(footer_button.getAttribute('data-unsubscribed'));
                 var url = getBaseUrl() + '/preference/' + (is_subscribed ? 'unsubscribe' : 'resubscribe') + '?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
 
                     request({
