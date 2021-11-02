@@ -27,6 +27,15 @@ function load() {
             load_css("/assets/css/hd.css");
             break;
 
+        case "hanteranyhetsbrev.sydsvenskan.se":
+            var site_name = "Sydsvenskan.se";
+            var logo_url = "https://kundservice.bonniernewslocal.se/sydsvenskan/wp-content/uploads/sites/39/2021/03/sds-logga.png";
+            var json_url =  "/assets/settings/preferences-sydsvenskan.json";
+            var page_title = "Hantera dina nyhetsbrev";
+            var bg_color = "#71131C";
+            load_css("/assets/css/sydsvenskan.css");
+            break;
+
         case "vitaldo1992.github.io":
             var site_name = "Sydsvenskan.se";
             var logo_url = "https://kundservice.bonniernewslocal.se/sydsvenskan/wp-content/uploads/sites/39/2021/03/sds-logga.png";
@@ -141,97 +150,150 @@ function load() {
         var subscriber_id = getParameterByName('subscriber_id'),
             account_id = getParameterByName('account_id'),
             group_id = getParameterByName('preference_group_id'),
+            preference_id = getParameterByName('preference_id'),
             rule_unsubscribe_portal = document.querySelector('#rule-unsubscribe-portal');
 
-        var url = getBaseUrl() + '/preference/encrypted-preferences?account_id=' + account_id + '&preference_group_id=' + group_id + '&subscriber_id=' + subscriber_id;
         request({
-            url: url,
-            callback: function(res) {
-                request( {
-                    url: json_url /*'preference-mock.json'*/,
-                    callback: function(categories) {
-                        categories.forEach(function(category) {
-                            category.preferences.forEach(function(preference) {
-                                res.preference_group.preferences.forEach(function(pref) {
-                                    if(preference.name === pref.name) {
-                                        preference.is_opted_in = pref.is_opted_in;
-                                        preference.position = pref.position;
-                                        preference.id = pref.id;
-                                    }
-                                })
+            url: getBaseUrl() + '/check-suppression?account_id=' + account_id + '&subscriber_id=' + subscriber_id,
+            callback: function(subscriber) {
+                if (group_id) {
+                    var url = getBaseUrl() + '/preference/encrypted-preferences?account_id=' + account_id + '&preference_group_id=' + group_id + '&subscriber_id=' + subscriber_id;
+                    request({
+                        url: url,
+                        callback: function(res) {
+                            request( {
+                                url: json_url /*'preference-mock.json'*/,
+                                callback: function(categories) {
+                                    categories.forEach(function(category) {
+                                        category.preferences.forEach(function(preference) {
+                                            res.preference_group.preferences.forEach(function(pref) {
+                                                if(preference.name === pref.name) {
+                                                    preference.is_opted_in = pref.is_opted_in;
+                                                    preference.position = pref.position;
+                                                    preference.id = pref.id;
+                                                }
+                                            })
+                                        })
+                                    })
+
+                                    subscriber.preference_id = preference_id;
+                                    subscriber.preference_group = res.preference_group;
+
+                                    rule_unsubscribe_portal.innerHTML = getPreferencesPage(subscriber, categories);
+
+                                    listenUpdatePreferences(subscriber_id, account_id, subscriber.preference_group);
+                                    listenToggleSubscribe(subscriber_id, account_id);
+                                }
                             })
-                        });
 
-                        rule_unsubscribe_portal.innerHTML = getPreferencesPage(categories);
-
-                        listenUpdatePreferences(subscriber_id, account_id, categories);
-                        // listenToggleSubscribe(subscriber_id, account_id);
-                    }
-                })
-
+                        }
+                    });
+                } else {
+                    // rule_unsubscribe_portal.innerHTML = getPreferencesPage(subscriber);
+                    listenToggleSubscribe(subscriber_id, account_id);
+                }
             }
         });
     }
 
 
-    function getPreferencesPage(categories) {
+    /*************************NY***********/
 
-        var is_subscribed = !!categories.filter(function(category) {
-            return category.preferences.some(function (preference) { return !!preference.is_opted_in; } );
-        }).length;
+    function getInitialTitle(has_preferences, is_suppressed, preference_group, unsubscribed_preference_id) {
+        var translation = getTranslations();
+        if (has_preferences) {
+            if (is_suppressed) {
+                return translation.title.unsubscribed;
+            }
+            var unsubscribed_preference = getPreference(unsubscribed_preference_id, preference_group.preferences);
+            return unsubscribed_preference && unsubscribed_preference.is_opted_in
+                ? translation.title.preferences
+                : translation.title.common + ' <b>' + unsubscribed_preference.name + '</b>!'
+        } else {
+            return is_suppressed ? translation.title.unsubscribed : translation.title.subscribed;
+        }
+    }
 
+
+    function getPreference(preference_id, preferences) {
+        return preferences.filter(function (preference) {
+            return preference.id === preference_id;
+        })[0];
+    }
+
+    /*************************NY***********/
+
+
+
+    function getPreferencesPage(subscriber, categories) {
+
+        /*******************/
+
+        var unsubscribed_preference_id = subscriber.preference_id,
+            preference_group = subscriber.preference_group,
+            has_preferences = !!preference_group,
+            is_suppressed = subscriber.is_suppressed,
+            translation = getTranslations(),
+            visibility_attribute = is_suppressed ? 'hidden="true"' : '';
+
+        /********************/
+
+        var is_subscribed = subscriber.preference_group.preferences.some(function (preference) { return preference.is_opted_in === 1;} )
+        var title_off = getInitialTitle(has_preferences, is_suppressed, preference_group, unsubscribed_preference_id);
+        if(title_off){
+            var title_unsubscribed = "<p class='opt-out-head blink' id='opt-out-head-top'>" + title_off + "</p>";
+        };
         return '' +
-          '<div class="unsubscribe-page">' +
+            '<div class="unsubscribe-page">' +
             '<div class="logo_top"><img src="'+ logo_url +'" class="logo"></div>' +
-            '<div class="notification"></div>' +
+            title_unsubscribed +
             '<p class="page-title">'+ page_title +'</p>' +
             '<p class="page-description">'+ page_description + 'Välj de nyhetsbrev som intresserar dig mest. Klicka på knappen under respektiv nyhetsbrev för att anmäla eller avanmäla dig.</p>' +
             '<div class="content" id="preferences-content">' +
-              categories.map(function (category) {
+            categories.map(function (category) {
                 return '' +
-                  '<p class="category-name">' + category.name + '</p>' +
-                  '<div class="email-preferences-group">' +
+                    '<p class="category-name">' + category.name + '</p>' +
+                    '<div class="email-preferences-group">' +
                     '<ul class="email-preferences">' +
                     category.preferences.map(function (preference) {
-                      return '' +
-                        '<li class="preference" id="preference-id-' + preference.id + '">' +
-                          '<img  class="image" src="' + preference.img + '">' +
-                          '<p class="preference-name">' +
+                        return '' +
+                            '<li class="preference" id="preference-id-' + preference.id + '">' +
+                            '<img  class="image" src="' + preference.img + '">' +
+                            '<p class="preference-name">' +
                             preference.name +
-                          '</p>' +
-                          '<p class="description">' +
+                            '</p>' +
+                            '<p class="description">' +
                             preference.description +
-                          '</p>' +
-                          (preference.is_opted_in
-                            ? (
-                              '<div class="pref-button opt-out">' +
-                                '<label>' +
-                                  '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '" checked="checked"/><span>Avanmäl dig</span>' +
-                                '</label>' +
-                              '</div>'
-                            )
-                            : (
-                              '<div class="pref-button  opt-in">' +
-                                '<label>' +
-                                  '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '"/><span>Anmäl dig</span>' +
-                                '</label>' +
-                              '</div>'
-                            )
-                          ) +
-                        '</li>'
-                    }).join(' ') + '</ul>' +
-              '</div>'
+                            '</p>' +
+                            (preference.is_opted_in
+                                    ? (
+                                        '<div class="pref-button opt-out">' +
+                                        '<label>' +
+                                        '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '" checked="checked"/><span>Avanmäl dig</span>' +
+                                        '</label>' +
+                                        '</div>'
+                                    )
+                                    : (
+                                        '<div class="pref-button  opt-in">' +
+                                        '<label>' +
+                                        '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '"/><span>Anmäl dig</span>' +
+                                        '</label>' +
+                                        '</div>'
+                                    )
+                            ) +
+                            '</li>'
+                    }).join(' ') + '</ul>'
             }).join(' ') +
             '</div>' +
             '<footer class="footer">' +
-              (is_subscribed
-                ? (
-                  '<p id="footer-text"  class="footer-text"> Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev </p>' +
-                  '<button class="pref-button opt-out" id="footer-button" data-unsubscribed="true">Avanmäl dig</button>'
-                ) : ''
-              ) +
+            (is_subscribed
+                    ? (
+                        '<p id="footer-text"  class="footer-text"> Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev </p>' +
+                        '<button class="pref-button opt-out" id="footer-button" data-unsubscribed="true">Avanmäl dig</button>'
+                    ) : ''
+            ) +
             '</footer>' +
-          '</div>';
+            '</div>';
     }
 
     function getParameterByName(name) {
@@ -272,6 +334,9 @@ function load() {
 
 
     function listenUpdatePreferences(subscriber_id, account_id, preference_group) {
+
+
+
 
         document.addEventListener('click', function (event) {
 
@@ -333,6 +398,35 @@ function load() {
         });
     }
 
+    /*  function listenUpdatePreferences(subscriber_id, account_id, preference_group) {
+          document.addEventListener('click', function (event) {
+              if (event.target instanceof HTMLInputElement) {
+                  preference_group.preferences.forEach(function (preference) {
+                      var checkbox = document.querySelector('#preference-checkbox-' + preference.id);
+                      preference.is_opted_in = checkbox && checkbox.checked;
+                  });
+                  if(!event.target.hasAttribute('checked')) {
+                      event.target.parentNode.parentNode.classList.add('checked');
+                      event.target.parentNode.parentNode.classList.remove('opt-out');
+                      event.target.setAttribute('checked', 'true');
+                  } else {
+                      event.target.parentNode.parentNode.classList.add('opt-out');
+                      event.target.parentNode.parentNode.classList.remove('opt-in');
+                      event.target.parentNode.parentNode.classList.remove('checked');
+                      event.target.removeAttribute('checked');
+                  }
+                  console.log('preference_group', preference_group)
+                  var url = getBaseUrl() + '/preference/update-subscriber-preferences';
+
+                  request({
+                      url: url,
+                      method: 'PATCH',
+                      body: { preference_group: preference_group },
+                      callback: function () {}
+                  });
+              }
+          });
+      } */
 
     function getBaseUrl() {
         return getParameterByName('domain');
@@ -372,10 +466,3 @@ function load() {
     }
 
 })();
-
-
-
-
-
-
-
