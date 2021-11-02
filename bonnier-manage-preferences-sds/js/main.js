@@ -316,6 +316,7 @@ function load() {
             checkbox.addEventListener('change', function (event) {
 
                 preference_group.preferences.forEach(function (preference) {
+                    console.log(preference);
                     var preference_checkbox = document.querySelector('#preference-checkbox-' + preference.id);
                     preference.is_opted_in = preference_checkbox.checked;
                     show_stat();
