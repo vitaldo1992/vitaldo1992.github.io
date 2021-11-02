@@ -259,10 +259,10 @@ function load() {
               (is_suppressed
                 ? (
                     '<p id="footer-text"  class="footer-text"> Vill du få nyheter? </p>' +
-                    '<button class="footer-button" id="footer-button" data-unsubscribed="true">Prenumerera igen</button>'
+                    '<button class="pref-button footer-button" id="footer-button" data-unsubscribed="true">Prenumerera igen</button>'
                 ) : (
                     '<p id="footer-text"  class="footer-text"> Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev </p>' +
-                    '<button class="footer-button" id="footer-button" data-unsubscribed="false">Avanmäl dig</button>'
+                    '<button class="pref-button footer-button" id="footer-button" data-unsubscribed="false">Avanmäl dig</button>'
                 )
               ) +
             '</footer>' +
