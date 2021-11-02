@@ -295,7 +295,7 @@ function load() {
                         callback: function (response) {
                             if (response && response.success === 'true') {
                                 is_subscribed = !is_subscribed;
-                                footer_button.setAttribute('data-unsubscribed', is_subscribed);
+                                footer_button.setAttribute('data-unsubscribed', !is_subscribed);
                                 if (is_subscribed) {
                                     footer_text.textContent = 'Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev';
                                     footer_button.textContent = 'Avanmäl dig';
