@@ -331,15 +331,11 @@ function load() {
             function show_stat(){
                 var elem = document.getElementById("opt-out-head-top");
                 if(elem){
-                    /*  elem.parentNode.removeChild(elem); */
-                    console.log(Object.values(preference_group));
-
                     elem.textContent = "Inställningarna har uppdaterats.";
                     elem.style.color="#000";
                     elem.style.display="inline-block";
                 }
             }
-            /* document.getElementById('opt-out-head-top').style.opacity="0"; */
 
             if (event.target instanceof HTMLInputElement) {
                 preference_group.preferences.forEach(function (preference) {
