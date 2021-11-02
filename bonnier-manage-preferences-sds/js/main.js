@@ -223,7 +223,6 @@ function load() {
 
         /********************/
 
-        var is_subscribed = subscriber.preference_group.preferences.some(function (preference) { return preference.is_opted_in === 1;} )
         var title_off = getInitialTitle(is_suppressed);
         var title_unsubscribed = "<p class='opt-out-head blink'" + (title_off ? title_off : " style='display: none'") +  " id='opt-out-head-top'>" + title_off + "</p>";
         return '' +
@@ -239,42 +238,45 @@ function load() {
                     '<div class="email-preferences-group">' +
                     '<ul class="email-preferences">' +
                     category.preferences.map(function (preference) {
-                        return '' +
-                            '<li class="preference" id="preference-id-' + preference.id + '">' +
-                            '<img  class="image" src="' + preference.img + '">' +
-                            '<p class="preference-name">' +
-                            preference.name +
-                            '</p>' +
-                            '<p class="description">' +
-                            preference.description +
-                            '</p>' +
-                            (preference.is_opted_in
-                                    ? (
-                                        '<div class="pref-button opt-out">' +
-                                        '<label>' +
-                                        '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '" checked="checked"/><span>Avanmäl dig</span>' +
-                                        '</label>' +
-                                        '</div>'
-                                    )
-                                    : (
-                                        '<div class="pref-button  opt-in">' +
-                                        '<label>' +
-                                        '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '"/><span>Anmäl dig</span>' +
-                                        '</label>' +
-                                        '</div>'
-                                    )
-                            ) +
-                            '</li>'
+                      return '' +
+                        '<li class="preference" id="preference-id-' + preference.id + '">' +
+                        '<img  class="image" src="' + preference.img + '">' +
+                        '<p class="preference-name">' +
+                        preference.name +
+                        '</p>' +
+                        '<p class="description">' +
+                        preference.description +
+                        '</p>' +
+                        (preference.is_opted_in
+                          ? (
+                            '<div class="pref-button opt-out">' +
+                              '<label>' +
+                                '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '" checked="checked"/><span>Avanmäl dig</span>' +
+                              '</label>' +
+                            '</div>'
+                          )
+                          : (
+                            '<div class="pref-button  opt-in">' +
+                              '<label>' +
+                                '<input class="btn" type="checkbox" value="1" id="preference-checkbox-' + preference.id + '"/><span>Anmäl dig</span>' +
+                              '</label>' +
+                            '</div>'
+                          )
+                        ) +
+                        '</li>'
                     }).join(' ') + '</ul></div>'
             }).join(' ') +
             '</div>' +
             '<footer class="footer">' +
-            (is_subscribed
-                    ? (
-                        '<p id="footer-text"  class="footer-text"> Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev </p>' +
-                        '<button class="pref-button opt-out" id="footer-button" data-unsubscribed="true">Avanmäl dig</button>'
-                    ) : ''
-            ) +
+              (is_suppressed
+                ? (
+                    '<p id="footer-text"  class="footer-text"> Vill du få nyheter? </p>' +
+                    '<button class="pref-button opt-out" id="footer-button" data-unsubscribed="true">Prenumerera igen</button>'
+                ) : (
+                    '<p id="footer-text"  class="footer-text"> Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev </p>' +
+                    '<button class="pref-button opt-out" id="footer-button" data-unsubscribed="false">Avanmäl dig</button>'
+                )
+              ) +
             '</footer>' +
             '</div>';
     }
@@ -290,27 +292,39 @@ function load() {
 
     function listenToggleSubscribe(subscriber_id, account_id) {
         var footer_button = document.querySelector('#footer-button'),
-            url;
+            footer_text = document.querySelector('#footer-text');
 
         if (footer_button) {
             footer_button.addEventListener('click', function () {
                 var is_subscribed = footer_button.getAttribute('data-unsubscribed');
-
-                if (is_subscribed) {
-                    url = getBaseUrl() + '/preference/unsubscribe?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
+                var url = getBaseUrl() + '/preference/' + (is_subscribed ? 'unsubscribe' : 'resubscribe') + '?account_id=' + account_id + '&subscriber_id=' + subscriber_id;
 
                     request({
                         url: url,
                         callback: function (response) {
                             if (response && response.success === 'true') {
-                                var elements = document.getElementsByClassName('opt-in');
-                                for (var i = 0, len = elements.length; i < len; i++) {
-                                    elements[i].classList.remove('opt-in');
+                                if (is_subscribed) {
+                                    footer_text.textContent = 'Vill du få nyheter?';
+                                    footer_button.textContent = 'Prenumerera igen';
+                                    footer_button.setAttribute('data-unsubscribed', 'true');
+                                } else {
+                                    footer_text.textContent = 'Inte längre intresserad? Avanmäl dig från samtliga nyhetsbrev';
+                                    footer_button.textContent = 'Avanmäl dig';
+                                    footer_button.setAttribute('data-unsubscribed', 'false');
                                 }
-                            }
+                                document.querySelectorAll('.preference .pref-button').forEach(function(element) {
+                                    var input = element.querySelector('.btn');
+                                    if (is_subscribed && input.checked) {
+                                        element.classList.add('opt-in');
+                                    }
+                                    if (!is_subscribed && input.checked) {
+                                        element.classList.remove('opt-in');
+                                    }
+
+                                });
                         }
-                    });
-                }
+                    }
+                });
             });
         }
     }
@@ -328,7 +342,7 @@ function load() {
             function show_stat(){
                 var elem = document.getElementById("opt-out-head-top");
                 if(elem){
-                    /*          elem.parentNode.removeChild(elem); */
+                    /*  elem.parentNode.removeChild(elem); */
                     console.log(Object.values(preference_group));
 
                     elem.textContent = "Inställningarna har uppdaterats.";
