@@ -186,15 +186,15 @@ p {
     cursor: pointer;
 }
 
+.suppressed .pref-button {
+    background-color: #EFEFEF;
+    color: var(--color-black);
+}
+
 .footer-button,
 input:checked + .pref-button {
     background-color: lightgray;
     color: #595959;
-}
-
-.suppressed .pref-button {
-    background-color: #EFEFEF !important;
-    color: var(--color-black) !important;
 }
 
 .footer {
