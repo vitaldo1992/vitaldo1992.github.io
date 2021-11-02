@@ -229,6 +229,7 @@ function load() {
                     '<div class="email-preferences-group">' +
                     '<ul class="email-preferences">' +
                     category.preferences.map(function (preference) {
+                      console.log(preference);
                       return '' +
                         '<li class="preference" id="preference-id-' + preference.id + '">' +
                         '<img  class="image" src="' + preference.img + '">' +
