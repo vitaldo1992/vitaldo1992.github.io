@@ -246,7 +246,7 @@ function load() {
                             '</label>'
                             ) : (
                             '<input class="checkbox" type="checkbox" id="preference-checkbox-' + preference.id + '"/>' +
-                            '<label class="pref-button" for="preference-checkbox' + preference.id + '">' +
+                            '<label class="pref-button" for="preference-checkbox-' + preference.id + '">' +
                               'Anmäl dig' +
                             '</label>'
                           )
@@ -315,6 +315,7 @@ function load() {
         document.querySelectorAll('.checkbox').forEach( function(checkbox) {
             checkbox.addEventListener('change', function (event) {
 
+                console.log(checkbox);
                 preference_group.preferences.forEach(function (preference) {
                     var checkbox = document.querySelector('#preference-checkbox-' + preference.id);
                     preference.is_opted_in = checkbox.checked;

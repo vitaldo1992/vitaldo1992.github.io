@@ -183,6 +183,7 @@ p {
     font-size: 12px;
     background-color: var(--color-dark);
     color: #fff;
+    cursor: pointer;
 }
 
 input:checked + .pref-button {
