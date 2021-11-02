@@ -307,7 +307,7 @@ function load() {
                                     var input = element.querySelector('.btn');
                                     if (!is_subscribed) {
                                         element.classList.remove('opt-in');
-                                    } else if (input.checked) {
+                                    } else if (!input.checked) {
                                         element.classList.add('opt-in');
                                     }
                                 });
