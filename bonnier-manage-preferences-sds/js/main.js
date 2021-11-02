@@ -229,7 +229,6 @@ function load() {
                     '<div class="email-preferences-group">' +
                     '<ul class="email-preferences">' +
                     category.preferences.map(function (preference) {
-                      console.log(preference);
                       return '' +
                         '<li class="preference" id="preference-id-' + preference.id + '">' +
                         '<img  class="image" src="' + preference.img + '">' +
@@ -317,12 +316,13 @@ function load() {
             checkbox.addEventListener('change', function (event) {
 
                 preference_group.preferences.forEach(function (preference) {
-                    console.log(preference);
                     var preference_checkbox = document.querySelector('#preference-checkbox-' + preference.id);
-                    preference.is_opted_in = preference_checkbox.checked;
-                    show_stat();
+                    if (preference_checkbox) {
+                        preference.is_opted_in = preference_checkbox.checked;
+                    }
                 });
 
+                show_stat();
                 var checkbox_label = checkbox.parentNode.querySelector('label');
                 if(checkbox.checked) {
                     checkbox_label.textContent = 'Avanmäl dig';
